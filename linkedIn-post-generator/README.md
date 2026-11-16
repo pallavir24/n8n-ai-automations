@@ -1,47 +1,49 @@
-# 💼 AI LinkedIn Post Generator (from Google Sheets)
+# 💼 Social Media Automation: AI LinkedIn Post Generator
 
-An automated n8n workflow that turns article links stored in Google Sheets into ready-to-publish, high-engagement LinkedIn posts using AI.
+An automated n8n workflow that monitors a Google Sheet for new article links, summarizes the article, drafts an industry-expert LinkedIn post using **OpenRouter (`openai/gpt-3.5-turbo-0613`)**, and publishes it directly to your LinkedIn profile.
 
 ![Workflow Canvas](./workflow-canvas.png)
 
 ## ⚙️ How It Works
 
-1. **Trigger:** Monitors a connected **Google Sheet** for new rows containing an article URL (or runs on a schedule to process rows marked `Pending`).
-2. **Extract Article Content:** Uses an **HTTP Request / HTML Extract** node (or web scraper) to fetch the full text of the article from the provided URL.
-3. **Generate Post:** Sends the article text to **[AI Model, e.g., OpenAI GPT-4o / Claude / Gemini]** with a custom system prompt to write a hook, key takeaways, and relevant hashtags.
-4. **Save / Publish:** Writes the generated draft back into the Google Sheet (and/or publishes directly to LinkedIn) and updates the row status to `Done`.
+1. **Google Sheets Trigger:** Polls `Sheet1` in your connected Google Sheet **every hour** for new rows containing an `Article link`.
+2. **Article Summarization (`Basic LLM Chain`):** Passes the `Article link` to **OpenRouter (`openai/gpt-3.5-turbo-0613`)** to generate a concise summary of the article.
+3. **LinkedIn Post Drafting (`Basic LLM Chain1`):** Sends the summary to a second **OpenRouter (`openai/gpt-3.5-turbo-0613`)** chain with an industry-expert persona prompt to generate a structured post with analysis, industry implications, and a call to action.
+4. **Auto-Publish (`Create a post`):** Automatically publishes the generated text directly to your personal **LinkedIn** profile.
 
 ## 📊 Google Sheet Setup
 
-Create a Google Sheet with the following column headers before running the workflow:
+Create a Google Sheet (`Sheet1`) with the exact column header below before running the workflow:
 
-| Article URL | Status | Generated Post | Date |
-| :--- | :--- | :--- | :--- |
-| `https://example.com` | `Pending` | *(Auto-filled by n8n)* | *(Auto-filled)* |
+| Article link |
+| :--- |
+| `https://online.hbs.edu/blog/post/ethical-considerations-of-ai` |
 
 ## 🔑 Required Credentials
 
-* **Google Sheets OAuth2:** Access to read URLs and update row statuses.
-* **LLM API Key:** [OpenAI / Google Gemini / Anthropic] API credentials.
-* *(Optional)* **LinkedIn OAuth2:** Required if you enable automatic publishing instead of saving drafts to Sheets.
+Configure the following credentials in n8n after importing the workflow:
+* **Google Sheets Trigger OAuth2:** To monitor your spreadsheet for newly added rows.
+* **OpenRouter API:** To power both LLM chains (`openai/gpt-3.5-turbo-0613`).
+* **LinkedIn OAuth2:** To publish the final post directly to your LinkedIn profile.
 
 ## 🛠️ Setup Instructions
 
-1. Create a Google Sheet matching the table layout above.
-2. Import `workflow.json` into n8n.
-3. Open the **Google Sheets** nodes, connect your Google account, and select your Spreadsheet ID and Sheet Name.
-4. Open the **AI / LLM** node and attach your API credentials.
-5. Add a test article URL to your sheet, run a manual test, and toggle the workflow to **Active**.
+1. Create a Google Sheet with a column named **`Article link`**.
+2. Import `workflow.json` into your n8n instance.
+3. Open the **Google Sheets Trigger** node, connect your Google account, and select your Spreadsheet (`Document`) and Sheet (`Sheet1`).
+4. Open both **OpenRouter Chat Model** nodes and attach your OpenRouter API credentials.
+5. Open the **Create a post** (LinkedIn) node, connect your LinkedIn OAuth2 account, and select your profile under **Person**.
+6. Add a test link to your Google Sheet, click **Test Workflow** to verify, and toggle the workflow to **Active**.
 
 ## 📝 Example Generated Post
 
-> 🚀 **AI agents are shifting from chatbots to autonomous workers.**
+> 🚀 **AI agents are shifting from chatbots to autonomous workflows.**
 >
-> A new report highlights how teams are cutting manual ops by 60% using event-driven workflows:
-> • Automated triage handles repetitive requests before humans step in
-> • Structured tool-calling keeps outputs reliable and auditable
-> • Human-in-the-loop gates ensure safety on critical actions
+> Recent breakthroughs show how businesses are automating repetitive content pipelines while maintaining editorial quality:
+> • Event-driven triggers eliminate manual copy-pasting across tools
+> • Chained LLM prompts separate research summarization from brand voice drafting
+> • Direct API publishing turns raw links into consistent thought leadership
 >
-> Which daily task would you automate first? 👇
+> How are you integrating AI automation into your daily content workflow? 👇
 >
-> #AI #Automation #n8n #Productivity #TechTrends
+> #AI #Automation #n8n #ArtificialIntelligence #FutureOfWork
