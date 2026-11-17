@@ -23,7 +23,7 @@ Create a Google Sheet (`Sheet1`) with the exact column header below before runni
 
 ## 📱 Sample Live LinkedIn Output
 
-![Sample LinkedIn Post with AI Image](./sample-post.png)
+![Sample LinkedIn Post with AI Image](./sample-image.png)
 
 ## 🔑 Required Credentials & API Keys
 
