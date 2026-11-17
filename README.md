@@ -8,6 +8,9 @@ A collection of production-ready AI automation workflows built with **n8n**. Eac
 | :--- | :--- | :--- | :--- |
 | **[Daily AI & Tech News Digest](./daily-ai-tech-news-digest)** | Merges AI Business & TechCrunch RSS feeds, summarizes top stories using OpenRouter (`GPT-4o-mini`), and delivers a daily brief to Gmail at 10:00 AM. | Schedule (Daily at 10:00 AM) | RSS Feeds, OpenRouter, Gmail |
 | **[LinkedIn Post Generator](./linkedin-post-generator)** | Monitors Google Sheets for new article links, summarizes the content, drafts an industry-expert post via OpenRouter (`GPT-3.5-turbo`), and auto-publishes to LinkedIn. | Google Sheets Trigger (Every Hour) | Google Sheets, OpenRouter, LinkedIn |
+| **[Automated LinkedIn Job Tracker](./automated-linkedin-job-tracker)** | Fetches LinkedIn job postings via RSS, extracts required skills and drafts a custom cover letter with Google Gemini, and logs structured rows into Google Sheets. | Schedule (Daily at 10:00 AM) | RSS Feed (FetchRSS), Google Gemini, Structured Output Parser, Google Sheets |
+| **[Auto AI Internship Applier](./auto-ai-internship-applier)** | Monitors Google Sheets for new internship entries, drafts a tailored application email using Google Gemini with structured JSON parsing, and sends it via Gmail. | Google Sheets Trigger (`rowAdded` at 10:00 AM) | Google Sheets, Google Gemini, Structured Output Parser, Gmail |
+
 
 ## 🚀 How to Import Any Workflow
 
