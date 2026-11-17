@@ -1,0 +1,321 @@
+{
+  "name": "Social Media Automation with Image",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1184,
+        -224
+      ],
+      "id": "c690f7b9-3ca4-4187-a0f2-da3309c4afa3",
+      "name": "Gemini - LinkedIn Content",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "mKh6fXlqOpusHgMA",
+          "name": "Google Gemini(PaLM) Api account 105609"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -1536,
+        -224
+      ],
+      "id": "7fe01d31-0146-4f08-b741-f90a172e0cf3",
+      "name": "Gemini - Article Summarizer",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "mKh6fXlqOpusHgMA",
+          "name": "Google Gemini(PaLM) Api account 105609"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Assume the role of an Industry expert and create a ready-to-post LinkedIn content discussing key points from the provided news article relevant to artificial intelligence. The post should provide insightful analysis, connect with current industry trends, and encourage professional engagement. Highlight notable implications for the industry and include a professional call to action.\nMake the post informative, structured, under 3000 characters, and ready to copy-paste directly to LinkedIn without any modifications.\nArticle summary: {{ $json.text }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -1184,
+        -432
+      ],
+      "id": "020953b1-fe89-419d-9f56-29d7817bf4bc",
+      "name": "Generate LinkedIn Post Content"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Summarize this article: {{ $json['Article link'] }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -1536,
+        -432
+      ],
+      "id": "a18080cf-b4ed-4a86-938a-6cc91f38f8ce",
+      "name": "Summarize News Article"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1U3KRUvd4Nsrhjvhsa3kXmIh_xhgV8W5fWkb7KuH2hKg",
+          "mode": "list",
+          "cachedResultName": "Automation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1U3KRUvd4Nsrhjvhsa3kXmIh_xhgV8W5fWkb7KuH2hKg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1U3KRUvd4Nsrhjvhsa3kXmIh_xhgV8W5fWkb7KuH2hKg/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1760,
+        -432
+      ],
+      "id": "6d033c25-2fe4-4ca4-b57f-2e07449a5146",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "vwvt8gn4aZ5BiB32",
+          "name": "Google Sheets Trigger account 9206"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -832,
+        -224
+      ],
+      "id": "a7b09d14-bf6f-43d8-ae52-66d33d8ceeba",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YOUR_API_KEY",
+          "name": "Google Gemini(PaLM) Api account 105609"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.stability.ai/v2beta/stable-image/generate/core",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_API_KEY"
+            },
+            {
+              "name": "Accept",
+              "value": "image/*"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "output_format",
+              "value": "jpeg"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -480,
+        -432
+      ],
+      "id": "c487694b-23be-4608-8bcf-2c6957bbbc1a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "person": "BSENQB_5Lk",
+        "text": "={{ $('Generate LinkedIn Post Content').item.json.text }}",
+        "shareMediaCategory": "IMAGE",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -432
+      ],
+      "id": "bd024c3c-21c4-4b36-af2c-e9f1e2dbb2c2",
+      "name": "Create a post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "oOolDdQgob6uM0Ih",
+          "name": "LinkedIn account 7074"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a concise image prompt (max 50 words) for a LinkedIn post visual based on this AI article summary. Focus on modern, professional imagery with technology/business themes. Use clear descriptive terms suitable for AI image generation. {{ $json.text }}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -832,
+        -432
+      ],
+      "id": "13f51db8-403b-48a0-ade6-970c71b99408",
+      "name": "Generate Image Prompt"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gemini - LinkedIn Content": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate LinkedIn Post Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Article Summarizer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarize News Article",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate LinkedIn Post Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Image Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize News Article": {
+      "main": [
+        [
+          {
+            "node": "Generate LinkedIn Post Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Summarize News Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Image Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Image Prompt": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "019a062d-1075-454e-a65f-bebd771c130a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "969257b09ad2942bbaff2e2288304f4969030574d109cdeca05bf11f630884df"
+  },
+  "id": "9WPb4YU0ZEz6rNN7",
+  "tags": []
+}
