@@ -12,7 +12,7 @@ An interactive n8n workflow that turns any topic typed into the n8n chat interfa
 
 ## 🎧 Sample Output
 
-* Listen to the sample generated episode: [`sample-podcast.wav`](./sample-podcast.wav) *(Topic: AI in Education)*
+* Listen to the sample generated episode: [`audio-generated.wav`](./audio-generated.wav) *(Topic: AI in Education)*
 * **Excerpt from generated script:**
   > *"Welcome to Future Class, the podcast exploring innovations shaping tomorrow's learning. Today we're diving into one of the most transformative forces in education: artificial intelligence..."*
 
