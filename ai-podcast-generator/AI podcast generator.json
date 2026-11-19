@@ -1,0 +1,156 @@
+{
+  "name": "AI podcast generator",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5e469bf9-fad8-461b-9d09-e5b07d2a4f79",
+      "name": "When chat message received",
+      "webhookId": "8e0a41cb-b91a-40f3-8d73-e5901c5333de"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        176
+      ],
+      "id": "10397311-7798-41df-b923-be6aa2ddbf71",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "mKh6fXlqOpusHgMA",
+          "name": "Google Gemini(PaLM) Api account 105609"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a professional podcast script writer. Create engaging, informative podcast content based on the given topic:{{ $json.chatInput }} . Length should be 2 minute when spoken. Just give the content only without labelling"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        208,
+        0
+      ],
+      "id": "20587200-822e-462c-a6ae-a33b3489ae4f",
+      "name": "Podcast Script Generator"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://global.api.murf.ai/v1/speech/stream",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "YOUR_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "name": "voiceId",
+              "value": "Gordon"
+            },
+            {
+              "name": "locale",
+              "value": "en-US"
+            },
+            {
+              "name": "model",
+              "value": "falcon-2.1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "1fd6ef51-2999-43e3-b07b-fc45e9038e44",
+      "name": "Murf API"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Podcast Script Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Podcast Script Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Podcast Script Generator": {
+      "main": [
+        [
+          {
+            "node": "Murf API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Murf API": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f1f22bc1-3988-4e5d-bc35-7d3927086388",
+  "meta": {
+    "instanceId": "969257b09ad2942bbaff2e2288304f4969030574d109cdeca05bf11f630884df"
+  },
+  "id": "t1sRndsNMnVF9s5l",
+  "tags": []
+}
