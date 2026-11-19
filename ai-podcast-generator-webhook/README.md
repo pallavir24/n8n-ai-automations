@@ -6,7 +6,7 @@ A full-stack AI podcast generation pipeline connecting a custom web frontend (**
 
 ![MellowCast Studio UI](./mellowcast-ui.png)
 
-* **Frontend App:** [MellowCast — Cozy Podcast Studio](https://ai.studio) *(Built with Google AI Studio)*
+* **Frontend App:** [MellowCast — Cozy Podcast Studio]((https://mellowcast.ai.studio/)) *(Built with Google AI Studio)*
 * **Request Format:** Sends a `POST` request to the n8n Webhook URL with a JSON body containing `{ "text": "<Podcast Topic>" }`.
 * **Response Handling:** Configured with `responseMode: "responseNode"` and CORS enabled (`Access-Control-Allow-Origin: *`, `Content-type: audio/wav`) to stream playable audio directly into the browser audio player.
 
